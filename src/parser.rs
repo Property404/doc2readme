@@ -1,0 +1,4 @@
+struct Converter {
+    dom: Dom
+    
+}
