@@ -2,7 +2,7 @@
 mod markdown;
 use anyhow::{anyhow, Result};
 use ego_tree::NodeRef;
-use markdown::{Item};
+use markdown::Item;
 use schmargs::{ArgsWithHelp, Schmargs};
 use scraper::{Html, Node, Selector};
 use std::{
@@ -47,7 +47,10 @@ fn main() -> Result<()> {
             //println!("CHILD: {child:?}");
         }
     }
-    println!("{markdown:?}");
+    println!("Markdown: {markdown:?}");
+    let mut string = String::new();
+    Item::print_all(&mut string, &markdown)?;
+    println!("{string}");
 
     Ok(())
 }
@@ -55,7 +58,7 @@ fn main() -> Result<()> {
 fn handle_children<'a>(children: impl Iterator<Item = NodeRef<'a, Node>>) -> Result<Vec<Item>> {
     let mut vec = Vec::new();
     for child in children {
-        vec.extend(handle_node(&child));
+        vec.extend(handle_node(&child)?);
     }
     Ok(vec)
 }
@@ -64,27 +67,32 @@ fn handle_children<'a>(children: impl Iterator<Item = NodeRef<'a, Node>>) -> Res
 fn handle_node(node: &NodeRef<Node>) -> Result<Vec<Item>> {
     match node.value() {
         Node::Text(text) => {
-            return Ok(Item::Text(format!(
+            return Ok(vec![Item::Text(format!(
                 "{}",
-                str::from_utf8(text.as_bytes())?.trim()
-            )?));
+                str::from_utf8(text.as_bytes())?.replace("\n"," ").replace("  ","")
+            ))]);
         }
         Node::Element(element) => {
             let name = element.name();
             if name == "h2" {
-                return Ok(Item::Header2(handle_children(node.children())?));
+                return Ok(vec![Item::Header2(handle_children(node.children())?)]);
             } else if name == "h3" {
-                return Ok(Item::Header3(handle_children(node.children())?));
+                return Ok(vec![Item::Header3(handle_children(node.children())?)]);
             } else if name == "code" {
-                return Ok(Item::CodeSpan(handle_children(node.children())?));
+                return Ok(vec![Item::CodeSpan(handle_children(node.children())?)]);
             } else if name == "p" {
-                return Ok(Item::Paragraph(handle_children(node.children())?));
+                return Ok(vec![Item::Paragraph(handle_children(node.children())?)]);
             } else if name == "ul" {
-                return Ok(Item::UnorderedList(handle_children(node.children())?));
+                return Ok(vec![Item::UnorderedList(handle_children(node.children())?)]);
             } else if name == "li" {
-                return Ok(Item::ListItem(handle_children(node.children())?));
+                return Ok(vec![Item::ListItem(handle_children(node.children())?)]);
+            } else if name == "a" {
+                return Ok(vec![Item::Link(
+                    "url".into(),
+                    handle_children(node.children())?,
+                )]);
             } else {
-                println!("<{name}/>")?;
+                println!("<{name}/>");
             }
         }
         _ => {}
