@@ -111,6 +111,7 @@ name = "doc2readme"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "ego-tree",
  "schmargs",
  "scraper",
  "tl",
