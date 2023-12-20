@@ -1,107 +1,123 @@
-Path: /home/dagan/Development/schmargs/target/doc/schmargs/index.html
-...
-Wow!
-#[no_std]A argument parser that can be used with 
-Features
+A argument parser that can be used with `#[no_std]`
 
- functionality--help that allows for wrapperA 
-Custom and default short and long flags
-std::vec::VecMulti-arg positional arguments and options with 
-Optional arguments
--friendly#![no_std]
--inspired derive macroclap-derive
+[Features](#features)
+----------
 
-Todo
+* `clap-derive`-inspired derive macro
+* `#![no_std]`-friendly
+* Optional arguments
+* Multi-arg positional arguments and options with [std::vec::Vec](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html)
+* Custom and default short and long flags
+* A [wrapper](enum.ArgsWithHelp.html) that allows for `--help` functionality
 
-Improve and write tests for help formatting
-Improve documentation
+[Todo](#todo)
+----------
 
-Helper Attributesschmargs
+* Improve documentation
+* Improve and write tests for help formatting
+
+[Helper Attributes](#helper-attributes)
+----------
+
+### [`schmargs`](#schmargs) ###
+
 This is an optional attribute that should be specified at the top level.
+
 Arguments:
 
- MUST be specified.iterates_over, Schmargs::parse_env environment and plan on parsing
-arguments passed to your program with std with an appropriate lifetime. If you’re in an &str. This defaults
-to Schmargs::parse type passed to core::iter::Iterator
-associated type of the Item - The string type that’s being iterated over. This should be the iterates_over=<type>
- - The name of the program. Defaults to the crate name.name=<str literal>
+* `name=<str literal>` - The name of the program. Defaults to the crate name.
+* `iterates_over=<type>` - The string type that’s being iterated over. This should be the `Item`associated type of the [core::iter::Iterator](https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html) type passed to [Schmargs::parse](trait.Schmargs.html#tymethod.parse). This defaults
+  to `&str` with an appropriate lifetime. If you’re in an `std` environment and plan on parsing
+  arguments passed to your program with `Schmargs::parse_env`, `iterates_over` MUST be specified.
 
-args
+### [`args`](#args) ###
+
 This is an optional attribute that should be specified on an argument.
+
 Arguments:
 
- - The long flag of the argument. If no value is provided, it will
-default to the the argument name.long[=<str literal>]
- - The short flag of the argument. If no value is provided, it will
-default to the first letter of the argument name.short[=<char literal>]
+* `short[=<char literal>]` - The short flag of the argument. If no value is provided, it will
+  default to the first letter of the argument name.
+* `long[=<str literal>]` - The long flag of the argument. If no value is provided, it will
+  default to the the argument name.
 
-Example
-.std::env::Args, so you can iterate over String to be
-iterates_over environment, you generally want to specify stdWhen using in an 
+[Example](#example)
+----------
 
-, args.content);"{:?}"(println!args = Args::parse_env();
-let // This parses the arguments passed to the program
-content: Vec<String>,
+When using in an `std` environment, you generally want to specify `iterates_over` to be`String`, so you can iterate over [std::env::Args](https://doc.rust-lang.org/nightly/std/env/struct.Args.html).
+
+```
+use schmargs::Schmargs;
+
+/// A program to yell at a cloud
+#[derive(Schmargs)]
+#[schmargs(iterates_over=String)]
+struct Args {
+    /// Yell volume, in decibels
+    #[arg(short, long)]
+    volume: Option<u64>,
+    /// Yell length, in nanoseconds
+    #[arg(short, long)]
+    length: Option<u64>,
+    /// Obscenities to yell
+    content: Vec<String>,
 }
 
-/// Obscenities to yell
-    <u64>,
-    Optionlength: #[arg(short, long)]
-    /// Yell length, in nanoseconds
-    <u64>,
-    Optionvolume: #[arg(short, long)]
-    /// Yell volume, in decibels
-    Args {
-    struct #[derive(Schmargs)]
-#[schmargs(iterates_over=String)]
-/// A program to yell at a cloud
-schmargs::Schmargs;
+// This parses the arguments passed to the program
+let args = Args::parse_env();
+println!("{:?}", args.content);
+```
 
-use 
- Examples#![no_std]
-);256(args.len, assert_eq!u8);
-*const as 0x40000000 (args.start, assert_eq!));
-8(Some(args.group, assert_eq!);
-true(args.no_null_check, assert_eq!);
-false(args.color, assert_eq!.split_whitespace()).unwrap();
-"-f --group 8 0x40000000 256"args = Args::parse(let }
+[`#![no_std]` Examples](#no_std-examples)
+----------
 
-// required positional argument
-len: usize, /// Number of bytes to read
-    // required positional argument
-    u8, *const start: /// Starting memory address
-    // this is optional
-    <u8>, Optiongroup: #[arg(short, long)]
-    /// How many bytes to show per line
-    no_null_check: bool,
-    )]
-    "force", long = 'f'#[arg(short = /// Disable sanity checks
-    color: bool,
-    #[arg(short, long)]
+```
+use schmargs::Schmargs;
+
+/// A simple memory dump program
+#[derive(Schmargs)]
+#[schmargs(name = "hexdump")]
+struct Args {
     /// Show color
-    Args {
-    struct )]
-"hexdump"#[derive(Schmargs)]
-#[schmargs(name = /// A simple memory dump program
-schmargs::Schmargs;
+    #[arg(short, long)]
+    color: bool,
+    /// Disable sanity checks
+    #[arg(short = 'f', long = "force")]
+    no_null_check: bool,
+    /// How many bytes to show per line
+    #[arg(short, long)]
+    group: Option<u8>, // this is optional
+    /// Starting memory address
+    start: *const u8, // required positional argument
+    /// Number of bytes to read
+    len: usize, // required positional argument
+}
 
-use 
+let args = Args::parse("-f --group 8 0x40000000 256".split_whitespace()).unwrap();
+assert_eq!(args.color, false);
+assert_eq!(args.no_null_check, true);
+assert_eq!(args.group, Some(8));
+assert_eq!(args.start, 0x40000000 as *const u8);
+assert_eq!(args.len, 256);
+```
+
 When strings are involved, you need to add a generic lifetime parameter
 
-);"Dagan"(args.person, assert_eq!);
-false(args.kick_shins, assert_eq!.split_whitespace()).unwrap();
-"Dagan"args = Args::parse(let str,
+```
+use schmargs::Schmargs;
+
+/// A very important program to greet somebody
+#[derive(Schmargs)]
+#[schmargs(name = "greet")]
+struct Args<'a> {
+    /// Should we kick the person's shins after greeting them?
+    #[arg(short, long = "kick")]
+    kick_shins: bool,
+    /// The person to greet
+    person: &'a str,
 }
 
-'a &person: /// The person to greet
-    kick_shins: bool,
-    )]
-    "kick"#[arg(short, long = /// Should we kick the person's shins after greeting them?
-    > {
-    'aArgs<struct )]
-"greet"#[derive(Schmargs)]
-#[schmargs(name = /// A very important program to greet somebody
-schmargs::Schmargs;
-
-use 
-
+let args = Args::parse("Dagan".split_whitespace()).unwrap();
+assert_eq!(args.kick_shins, false);
+assert_eq!(args.person, "Dagan");
+```
