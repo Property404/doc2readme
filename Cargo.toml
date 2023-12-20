@@ -7,8 +7,6 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.75"
-ego-tree = "0.6.2"
 html2md = "0.2.14"
 schmargs = { git = "https://github.com/Property404/schmargs", version = "0.0.0" }
 scraper = "0.18.1"
-tl = "0.7.7"

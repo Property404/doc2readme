@@ -1,11 +1,7 @@
-#![allow(unused_imports)]
 use anyhow::{anyhow, Result};
-use ego_tree::NodeRef;
 use schmargs::{ArgsWithHelp, Schmargs};
-use scraper::{Html, Node, Selector};
+use scraper::{Html, Selector};
 use std::{
-    collections::VecDeque,
-    fmt::{self, Write},
     fs,
     path::PathBuf,
     str,

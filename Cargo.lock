@@ -202,11 +202,9 @@ name = "glock"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "ego-tree",
  "html2md",
  "schmargs",
  "scraper",
- "tl",
 ]
 
 [[package]]
@@ -754,12 +752,6 @@ dependencies = [
  "quote",
  "syn 2.0.40",
 ]
-
-[[package]]
-name = "tl"
-version = "0.7.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d5e993a1c7c32fdf90a308cec4d457f507b2573acc909bd6e7a092321664fdb3"
 
 [[package]]
 name = "unicode-ident"
