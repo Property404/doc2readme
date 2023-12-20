@@ -1,11 +1,7 @@
 use anyhow::{anyhow, Result};
 use schmargs::{ArgsWithHelp, Schmargs};
 use scraper::{Html, Selector};
-use std::{
-    fs,
-    path::PathBuf,
-    str,
-};
+use std::{fs, path::PathBuf, str};
 
 #[derive(Debug, Schmargs)]
 #[schmargs(iterates_over=String)]
@@ -25,13 +21,10 @@ fn main() -> Result<()> {
         Args::Args(args) => args,
     };
 
-    println!("Path: {}", args.path.display());
-
     let html = fs::read_to_string(args.path)?;
 
     let html = Html::parse_fragment(&html);
-    let main_content = html.select(&query("#main-content")?).next().unwrap();
-    let docblock = main_content
+    let docblock = html
         .select(&query(".docblock")?)
         .next()
         .unwrap()

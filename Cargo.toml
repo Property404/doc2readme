@@ -9,4 +9,4 @@ edition = "2021"
 anyhow = "1.0.75"
 html2md = "0.2.14"
 schmargs = { git = "https://github.com/Property404/schmargs", version = "0.0.0" }
-scraper = "0.18.1"
+scraper = {version = "0.18.1", default-features = false }
