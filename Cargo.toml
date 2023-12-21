@@ -2,11 +2,12 @@
 name = "glock"
 version = "0.1.0"
 edition = "2021"
+license = "GPL-3.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 anyhow = "1.0.75"
-html2md = "0.2.14"
+html2md = { version = "0.2.14", path = "../html2md" }
 schmargs = { git = "https://github.com/Property404/schmargs", version = "0.0.0" }
 scraper = {version = "0.18.1", default-features = false }

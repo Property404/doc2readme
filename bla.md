@@ -26,7 +26,8 @@ This is an optional attribute that should be specified at the top level.
 Arguments:
 
 * `name=<str literal>` - The name of the program. Defaults to the crate name.
-* `iterates_over=<type>` - The string type that’s being iterated over. This should be the `Item`associated type of the [core::iter::Iterator](https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html) type passed to [Schmargs::parse](trait.Schmargs.html#tymethod.parse). This defaults
+* `iterates_over=<type>` - The string type that’s being iterated over. This should be the `Item`
+  associated type of the [core::iter::Iterator](https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html) type passed to [Schmargs::parse](trait.Schmargs.html#tymethod.parse). This defaults
   to `&str` with an appropriate lifetime. If you’re in an `std` environment and plan on parsing
   arguments passed to your program with `Schmargs::parse_env`, `iterates_over` MUST be specified.
 
@@ -44,7 +45,8 @@ Arguments:
 [Example](#example)
 ----------
 
-When using in an `std` environment, you generally want to specify `iterates_over` to be`String`, so you can iterate over [std::env::Args](https://doc.rust-lang.org/nightly/std/env/struct.Args.html).
+When using in an `std` environment, you generally want to specify `iterates_over` to be
+`String`, so you can iterate over [std::env::Args](https://doc.rust-lang.org/nightly/std/env/struct.Args.html).
 
 ```
 use schmargs::Schmargs;
