@@ -26,9 +26,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.75"
+version = "1.0.76"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
+checksum = "59d2a3357dde987206219e78ecfbbb6e8dad06cbb65292758d3270e6254f7355"
 
 [[package]]
 name = "autocfg"
@@ -102,7 +102,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13b588ba4ac1a99f7f2964d24b3d896ddc6bf847ee3855dbd4366f058cfcd331"
 dependencies = [
  "quote",
- "syn 2.0.40",
+ "syn 2.0.42",
 ]
 
 [[package]]
@@ -133,8 +133,19 @@ checksum = "2bba3e9872d7c58ce7ef0fcf1844fcc3e23ef2a58377b50df35dd98e42a5726e"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.40",
+ "syn 2.0.42",
  "unicode-xid",
+]
+
+[[package]]
+name = "doc2readme"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "html2md",
+ "markup5ever_rcdom",
+ "schmargs",
+ "scraper",
 ]
 
 [[package]]
@@ -186,16 +197,6 @@ dependencies = [
  "cfg-if",
  "libc",
  "wasi",
-]
-
-[[package]]
-name = "glock"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "html2md",
- "schmargs",
- "scraper",
 ]
 
 [[package]]
@@ -416,7 +417,7 @@ dependencies = [
  "phf_shared 0.11.2",
  "proc-macro2",
  "quote",
- "syn 2.0.40",
+ "syn 2.0.42",
 ]
 
 [[package]]
@@ -547,7 +548,7 @@ dependencies = [
 [[package]]
 name = "schmargs"
 version = "0.0.0"
-source = "git+https://github.com/Property404/schmargs#ed75e0b74370fe59c190b4b4448492b2b59414ef"
+source = "git+https://github.com/Property404/schmargs#44f114cd32e90ccedfddfa900167a0eeb32a5d52"
 dependencies = [
  "derive_more 1.0.0-beta.6",
  "schmargs-derive",
@@ -556,13 +557,13 @@ dependencies = [
 [[package]]
 name = "schmargs-derive"
 version = "0.0.0"
-source = "git+https://github.com/Property404/schmargs#ed75e0b74370fe59c190b4b4448492b2b59414ef"
+source = "git+https://github.com/Property404/schmargs#44f114cd32e90ccedfddfa900167a0eeb32a5d52"
 dependencies = [
  "anyhow",
  "proc-macro2",
  "quote",
  "snailquote",
- "syn 2.0.40",
+ "syn 2.0.42",
 ]
 
 [[package]]
@@ -622,7 +623,7 @@ checksum = "43576ca501357b9b071ac53cdc7da8ef0cbd9493d8df094cd821777ea6e894d3"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.40",
+ "syn 2.0.42",
 ]
 
 [[package]]
@@ -701,9 +702,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.40"
+version = "2.0.42"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13fa70a4ee923979ffb522cacce59d34421ebdea5625e1073c4326ef9d2dd42e"
+checksum = "5b7d0a2c048d661a1a59fcd7355baa232f7ed34e0ee4df2eef3c1c1c0d3852d8"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -723,22 +724,22 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.50"
+version = "1.0.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f9a7210f5c9a7156bb50aa36aed4c95afb51df0df00713949448cf9e97d382d2"
+checksum = "f11c217e1416d6f036b870f14e0413d480dbf28edbee1f877abaf0206af43bb7"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.50"
+version = "1.0.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "266b2e40bc00e5a6c09c3584011e08b06f123c00362c92b975ba9843aaaa14b8"
+checksum = "01742297787513b79cf8e29d1056ede1313e2420b7b3b15d0a768b4921f549df"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.40",
+ "syn 2.0.42",
 ]
 
 [[package]]
@@ -888,20 +889,20 @@ dependencies = [
 
 [[package]]
 name = "zerocopy"
-version = "0.7.30"
+version = "0.7.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "306dca4455518f1f31635ec308b6b3e4eb1b11758cefafc782827d0aa7acb5c7"
+checksum = "1c4061bedbb353041c12f413700357bec76df2c7e2ca8e4df8bac24c6bf68e3d"
 dependencies = [
  "zerocopy-derive",
 ]
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.7.30"
+version = "0.7.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be912bf68235a88fbefd1b73415cb218405958d1655b2ece9035a19920bdf6ba"
+checksum = "b3c129550b3e6de3fd0ba67ba5c81818f9805e58b8d7fee80a3a59d2c9fc601a"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.40",
+ "syn 2.0.42",
 ]

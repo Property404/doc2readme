@@ -8,7 +8,7 @@ A argument parser that can be used with `#[no_std]`
 * Optional arguments
 * Multi-arg positional arguments and options with [std::vec::Vec](https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html)
 * Custom and default short and long flags
-* A [wrapper](enum.ArgsWithHelp.html) that allows for `--help` functionality
+* A [wrapper](https://blarg/enum.ArgsWithHelp.html) that allows for `--help` functionality
 
 [Todo](#todo)
 ----------
@@ -27,7 +27,7 @@ Arguments:
 
 * `name=<str literal>` - The name of the program. Defaults to the crate name.
 * `iterates_over=<type>` - The string type that’s being iterated over. This should be the `Item`
-  associated type of the [core::iter::Iterator](https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html) type passed to [Schmargs::parse](trait.Schmargs.html#tymethod.parse). This defaults
+  associated type of the [core::iter::Iterator](https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html) type passed to [Schmargs::parse](https://blarg/trait.Schmargs.html#tymethod.parse). This defaults
   to `&str` with an appropriate lifetime. If you’re in an `std` environment and plan on parsing
   arguments passed to your program with `Schmargs::parse_env`, `iterates_over` MUST be specified.
 

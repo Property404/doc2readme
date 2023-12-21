@@ -1,5 +1,5 @@
 [package]
-name = "glock"
+name = "doc2readme"
 version = "0.1.0"
 edition = "2021"
 license = "GPL-3.0"
@@ -9,5 +9,6 @@ license = "GPL-3.0"
 [dependencies]
 anyhow = "1.0.75"
 html2md = { version = "0.2.14", path = "../html2md" }
+markup5ever_rcdom = "0.2.0"
 schmargs = { git = "https://github.com/Property404/schmargs", version = "0.0.0" }
 scraper = {version = "0.18.1", default-features = false }

@@ -1,12 +1,19 @@
+mod ahandler;
+
+use ahandler::AnchorHandlerFactory;
 use anyhow::{anyhow, Result};
+use html2md::TagHandlerFactory;
 use schmargs::{ArgsWithHelp, Schmargs};
 use scraper::{Html, Selector};
-use std::{fs, path::PathBuf, str};
+use std::{collections::HashMap, fs, path::PathBuf, str};
 
 #[derive(Debug, Schmargs)]
 #[schmargs(iterates_over=String)]
 /// Construct README from rust docs
 struct BareArgs {
+    /// Base URL for relative links
+    #[arg(short, long)]
+    base_url: Option<String>,
     /// Path to the file
     path: PathBuf,
 }
@@ -30,7 +37,15 @@ fn main() -> Result<()> {
         .unwrap()
         .inner_html();
 
-    println!("{}", html2md::parse_html(&docblock));
+    let mut handlers = HashMap::<String, Box<dyn TagHandlerFactory>>::new();
+    handlers.insert(
+        String::from("a"),
+        Box::new(AnchorHandlerFactory {
+            base_url: args.base_url,
+        }),
+    );
+
+    println!("{}", html2md::parse_html_custom(&docblock, &handlers));
 
     Ok(())
 }
