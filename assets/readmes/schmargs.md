@@ -1,7 +1,6 @@
 A argument parser that can be used with `#[no_std]`
 
-[Features](#features)
-----------
+## [Features](#features)
 
 * `clap-derive`-inspired derive macro
 * `#![no_std]`-friendly
@@ -10,16 +9,14 @@ A argument parser that can be used with `#[no_std]`
 * Custom and default short and long flags
 * A wrapper that allows for `--help` functionality
 
-[Todo](#todo)
-----------
+## [Todo](#todo)
 
 * Improve documentation
 * Improve and write tests for help formatting
 
-[Helper Attributes](#helper-attributes)
-----------
+## [Helper Attributes](#helper-attributes)
 
-### [`schmargs`](#schmargs) ###
+### [`schmargs`](#schmargs)
 
 This is an optional attribute that should be specified at the top level.
 
@@ -31,7 +28,7 @@ Arguments:
   to `&str` with an appropriate lifetime. If you’re in an `std` environment and plan on parsing
   arguments passed to your program with `Schmargs::parse_env`, `iterates_over` MUST be specified.
 
-### [`args`](#args) ###
+### [`args`](#args)
 
 This is an optional attribute that should be specified on an argument.
 
@@ -42,8 +39,7 @@ Arguments:
 * `long[=<str literal>]` - The long flag of the argument. If no value is provided, it will
   default to the the argument name.
 
-[Example](#example)
-----------
+## [Example](#example)
 
 When using in an `std` environment, you generally want to specify `iterates_over` to be
 `String`, so you can iterate over [std::env::Args](https://doc.rust-lang.org/nightly/std/env/struct.Args.html).
@@ -70,8 +66,7 @@ let args = Args::parse_env();
 println!("{:?}", args.content);
 ```
 
-[`#![no_std]` Examples](#no_std-examples)
-----------
+## [`#![no_std]` Examples](#no_std-examples)
 
 ```
 use schmargs::Schmargs;
