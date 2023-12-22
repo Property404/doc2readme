@@ -284,6 +284,7 @@ dependencies = [
 [[package]]
 name = "html2md"
 version = "0.2.14"
+source = "git+https://github.com/Property404/html2md?rev=49ff1eb#49ff1ebcaaa962331ef2d6742f9bb1181aa4f693"
 dependencies = [
  "html5ever",
  "jni",
@@ -696,7 +697,7 @@ dependencies = [
 [[package]]
 name = "schmargs"
 version = "0.0.0"
-source = "git+https://github.com/Property404/schmargs#44f114cd32e90ccedfddfa900167a0eeb32a5d52"
+source = "git+https://github.com/Property404/schmargs?rev=44f114c#44f114cd32e90ccedfddfa900167a0eeb32a5d52"
 dependencies = [
  "derive_more 1.0.0-beta.6",
  "schmargs-derive",
@@ -705,7 +706,7 @@ dependencies = [
 [[package]]
 name = "schmargs-derive"
 version = "0.0.0"
-source = "git+https://github.com/Property404/schmargs#44f114cd32e90ccedfddfa900167a0eeb32a5d52"
+source = "git+https://github.com/Property404/schmargs?rev=44f114c#44f114cd32e90ccedfddfa900167a0eeb32a5d52"
 dependencies = [
  "anyhow",
  "proc-macro2",
