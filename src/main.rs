@@ -1,16 +1,41 @@
 //! Convert crate documention into a README
 //!
-//! # Installation
+//! Alternative to [cargo-readme](https://docs.rs/cargo-readme). Unlike `cargo-readme`,
+//! `cargo-doc2readme` parses the output of rustdoc instead of extracting the doc comments directly
+//! from the rust source.
 //!
-//! ```ignore
+//! # Basic Usage
+//!
+//! Install:
+//!
+//! ```notrust
 //! cargo install --git https://github.com/Property404/doc2readme
 //! ```
 //!
-//! # Usage
+//! Usage:
 //!
-//! ```ignore
+//! ```notrust
 //! $ cargo doc2readme -o README.md
 //! ```
+//!
+//! # Templating
+//!
+//! `cargo-doc2readme` usages [minjinja](https://docs.rs/minijinja) as its
+//! templating engine, which happens to be a superset of `cargo-readme`'s templating engine. Like
+//! `cargo-readme`, `cargo-doc2readme` uses `README.tpl` as the template by default if it exists.
+//!
+//! The default template is:
+//!
+//! ```notrust
+#![doc = include_str!("./DEFAULT_TEMPLATE.tpl")]
+//! ```
+//!
+//! ## Template variables
+//!
+//! * crate - the crate name
+//! * license - the crate license
+//! * readme - the generated readme text
+//! * version - the crate version
 mod anchor_handler;
 mod header_handler;
 mod manifest;
