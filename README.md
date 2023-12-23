@@ -2,13 +2,13 @@
 
 Convert crate documention into a README
 
-# [Installation](#installation)
+## [Installation](#installation)
 
 ```
 cargo install --git https://github.com/Property404/doc2readme
 ```
 
-# [Usage](#usage)
+## [Usage](#usage)
 
 ```
 $ cargo doc2readme -o README.md

@@ -5,23 +5,24 @@ use tempfile::TempDir;
 
 #[test]
 fn integration_test() -> Result<()> {
-    let paths = fs::read_dir("assets/readmes/").unwrap();
+    let paths = fs::read_dir("assets/").unwrap();
 
-    for path in paths {
-        let path = path?;
-        test_project(path.path())?;
+    for project in paths {
+        let project = project?;
+        test_project(project.path())?;
     }
 
     Ok(())
 }
 
-fn test_project(markdown_file: impl AsRef<Path>) -> Result<()> {
+fn test_project(project_path: impl AsRef<Path>) -> Result<()> {
     // Create cargo project
     let cargo_dir = TempDir::new()?;
     let copy_options = Default::default();
-    fs_extra::dir::copy("assets/bare/", cargo_dir.path(), &copy_options)?;
-    let cargo_dir = cargo_dir.path().join("bare");
-    fs::copy(markdown_file.as_ref(), cargo_dir.join("README.md"))?;
+    fs_extra::dir::copy(project_path.as_ref(), cargo_dir.path(), &copy_options)?;
+    let cargo_dir = cargo_dir
+        .path()
+        .join(project_path.as_ref().file_name().unwrap());
     env::set_current_dir(cargo_dir)?;
 
     // Build documentation

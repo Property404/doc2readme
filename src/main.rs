@@ -138,7 +138,7 @@ fn main() -> Result<()> {
     license => manifest.package.as_ref().map(|p|p.license.clone())
     ))?;
     // minjinja strips newlines, which is only sometimes what we want
-    if !markdown.ends_with("\n") {
+    if !markdown.ends_with('\n') {
         markdown.push('\n');
     }
 

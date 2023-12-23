@@ -15,16 +15,13 @@ impl TagHandler for HeaderHandler {
 
         printer.insert_newline();
         printer.insert_newline();
-        // Each header must be embiggened to the desired header size
         match self.header_type.as_ref() {
-            "h1" => {
-                panic!("Oh wow, man!");
-            }
-            "h2" => printer.append_str("# "),
-            "h3" => printer.append_str("## "),
-            "h4" => printer.append_str("### "),
-            "h5" => printer.append_str("#### "),
-            "h6" => printer.append_str("##### "),
+            "h1" => printer.append_str("# "),
+            "h2" => printer.append_str("## "),
+            "h3" => printer.append_str("### "),
+            "h4" => printer.append_str("#### "),
+            "h5" => printer.append_str("##### "),
+            "h6" => printer.append_str("###### "),
             _ => {
                 panic!("This is not a header")
             }
