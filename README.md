@@ -4,7 +4,8 @@ Convert crate documention into a README
 
 Alternative to [cargo-readme](https://docs.rs/cargo-readme). Unlike `cargo-readme`,
 `cargo-doc2readme` parses the output of rustdoc instead of extracting the doc comments directly
-from the rust source.
+from the rust source. The main advantage here is that `cargo-doc2readme` can handle relative
+links in crate documentation.
 
 ## [Basic Usage](#basic-usage)
 
