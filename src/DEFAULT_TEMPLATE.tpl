@@ -2,7 +2,6 @@
 
 {{readme}}
 {% if license != none %}
-
 ## License
 
 {{license}}

@@ -1,14 +1,16 @@
 //! Convert crate documention into a README
 //!
-//! Usage
+//! # Installation
 //!
 //! ```ignore
-//! bla bla bla
+//! cargo install --git https://github.com/Property404/doc2readme
 //! ```
 //!
-//! # Features
+//! # Usage
 //!
-//! `std` - loljk this isn't a feature
+//! ```ignore
+//! $ cargo doc2readme -o README.md
+//! ```
 mod anchor_handler;
 mod header_handler;
 mod manifest;
