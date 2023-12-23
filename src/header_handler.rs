@@ -20,7 +20,7 @@ impl TagHandler for HeaderHandler {
             "h1" => {
                 panic!("Oh wow, man!");
             }
-            "h2" => printer.append_str("#"),
+            "h2" => printer.append_str("# "),
             "h3" => printer.append_str("## "),
             "h4" => printer.append_str("### "),
             "h5" => printer.append_str("#### "),

@@ -14,7 +14,7 @@ impl ProjectInfo {
         let mut manifests = None;
 
         let mut current_path = env::current_dir()?;
-        while target_dir.is_none() && manifests.is_none() {
+        while target_dir.is_none() || manifests.is_none() {
             println!("{current_path:?}");
             if current_path.parent().expect("No parent") == current_path {
                 if manifests.is_none() {
