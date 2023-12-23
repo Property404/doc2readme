@@ -1,3 +1,5 @@
+# bare
+
 A argument parser that can be used with `#[no_std]`
 
 ## [Features](#features)

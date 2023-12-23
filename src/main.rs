@@ -111,13 +111,13 @@ fn main() -> Result<()> {
     handlers.insert(String::from("h6"), Box::new(HeaderHandlerFactory));
 
     let markdown = html2md::parse_html_custom(&docblock, &handlers);
+    let markdown = format!("# {crate_name}\n\n{markdown}\n");
 
     if let Some(output_file) = args.output {
         let mut file = File::create(output_file)?;
         file.write_all(markdown.as_bytes())?;
-        file.write_all(b"\n")?;
     } else {
-        println!("{}", markdown);
+        print!("{}", markdown);
     }
 
     Ok(())
