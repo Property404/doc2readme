@@ -8,16 +8,15 @@ license = "GPL-3.0"
 
 [dependencies]
 anyhow = "1.0.76"
-assert_cmd = "2.0.12"
 cargo_toml = "0.17.2"
 # Patched because of a whitespace issue
 html2md = { version = "0.2.14", git = "https://github.com/Property404/html2md", rev = "49ff1eb" }
 markup5ever_rcdom = "0.2.0"
-pretty_assertions = "1.4.0"
 schmargs = { git = "https://github.com/Property404/schmargs", rev = "44f114c" }
 scraper = {version = "0.18.1", default-features = false }
-tempfile = "3.8.1"
 
 [dev-dependencies]
+assert_cmd = "2.0.12"
 fs_extra = "1.3.0"
 tempfile = "3.8.1"
+pretty_assertions = "1.4.0"
