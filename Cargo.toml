@@ -9,6 +9,7 @@ license = "GPL-3.0"
 [dependencies]
 anyhow = "1.0.76"
 assert_cmd = "2.0.12"
+cargo_toml = "0.17.2"
 # Patched because of a whitespace issue
 html2md = { version = "0.2.14", git = "https://github.com/Property404/html2md", rev = "49ff1eb" }
 markup5ever_rcdom = "0.2.0"

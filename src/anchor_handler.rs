@@ -7,6 +7,7 @@ pub(crate) struct AnchorHandler {
     base_url: Option<String>,
     start_pos: usize,
     url: Option<String>,
+    skip: bool,
 }
 
 impl TagHandler for AnchorHandler {
@@ -17,6 +18,18 @@ impl TagHandler for AnchorHandler {
         let url = match tag.data {
             NodeData::Element { ref attrs, .. } => {
                 let attrs = attrs.borrow();
+
+                // Ignore tooltips
+                if let Some(class) = attrs
+                    .iter()
+                    .find(|attr| attr.name.local.to_string() == "class")
+                {
+                    if class.value == "tooltip".into() {
+                        self.skip = true;
+                        return;
+                    }
+                }
+
                 let href = attrs
                     .iter()
                     .find(|attr| attr.name.local.to_string() == "href");
@@ -37,6 +50,10 @@ impl TagHandler for AnchorHandler {
             .base_url
             .as_ref()
             .map(|base_url| base_url.to_string() + &url)
+    }
+
+    fn skip_descendants(&self) -> bool {
+        self.skip
     }
 
     fn after_handle(&mut self, printer: &mut StructuredPrinter) {
