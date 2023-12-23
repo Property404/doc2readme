@@ -123,18 +123,22 @@ fn main() -> Result<()> {
     } else if Path::new(DEFAULT_TEMPLATE_PATH).is_file() {
         fs::read_to_string(DEFAULT_TEMPLATE_PATH)?
     } else {
-        "# {{crate}}\n\n{{readme}}\n".into()
+        include_str!("DEFAULT_TEMPLATE.tpl").into()
     };
-    let template = template + "\n"; // minjinja strips newline for smoe reason?
     templates.add_template("template", &template)?;
     let template = templates.get_template("template")?;
 
     let markdown = html2md::parse_html_custom(&docblock, &handlers);
-    let markdown = template.render(context!(
+    let mut markdown = template.render(context!(
     crate => crate_name,
     readme => markdown,
-    version => manifest.package.map(|p|p.version)
+    version => manifest.package.as_ref().map(|p|p.version.clone()),
+    license => manifest.package.as_ref().map(|p|p.license.clone())
     ))?;
+    // minjinja strips newlines, which is only sometimes what we want
+    if !markdown.ends_with("\n") {
+        markdown.push('\n');
+    }
 
     if let Some(output_file) = args.output {
         let mut file = File::create(output_file)?;
