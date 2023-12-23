@@ -29,7 +29,6 @@ fn test_project(markdown_file: impl AsRef<Path>) -> Result<()> {
 
     // Extract docs
     assert_cmd::Command::cargo_bin(env!("CARGO_PKG_NAME"))?
-        .arg("target/doc/bare/index.html")
         .arg("-o")
         .arg("EXTRACTED.md")
         .ok()?;

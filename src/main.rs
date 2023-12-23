@@ -25,6 +25,7 @@ use std::{
     fs::{self, File},
     io::Write,
     path::Path,
+    process::Command,
     str,
 };
 
@@ -81,16 +82,12 @@ fn main() -> Result<()> {
         .join(project_info.target_dir)
         .join(format!("doc/{}/index.html", crate_name.replace('-', "_")));
 
+    Command::new("cargo").arg("doc").status()?;
     if doc_path.metadata().is_err() {
-        bail!(
-            "Cannot find '{}'. Maybe try running `cargo run`?",
-            doc_path.display()
-        );
+        bail!("Cannot find '{}'", doc_path.display());
     }
 
-    println!("Reading...");
     let html = fs::read_to_string(doc_path)?;
-    println!("hmm...");
 
     let html = Html::parse_fragment(&html);
     let docblock = html
