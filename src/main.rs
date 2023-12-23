@@ -18,6 +18,7 @@ use anyhow::{anyhow, bail, Result};
 use header_handler::HeaderHandlerFactory;
 use html2md::TagHandlerFactory;
 use manifest::ProjectInfo;
+use minijinja::{context, Environment};
 use schmargs::{ArgsWithHelp, Schmargs};
 use scraper::{Html, Selector};
 use std::{
@@ -29,10 +30,15 @@ use std::{
     str,
 };
 
+const DEFAULT_TEMPLATE_PATH: &str = "README.tpl";
+
 #[derive(Debug, Schmargs)]
 #[schmargs(iterates_over=String)]
 /// Construct README from rust docs
 struct BareArgs {
+    /// The template to use, if any
+    #[arg(short, long)]
+    template: Option<String>,
     /// Base URL for relative links
     #[arg(short, long)]
     base_url: Option<String>,
@@ -110,8 +116,25 @@ fn main() -> Result<()> {
     handlers.insert(String::from("h5"), Box::new(HeaderHandlerFactory));
     handlers.insert(String::from("h6"), Box::new(HeaderHandlerFactory));
 
+    let mut templates = Environment::new();
+
+    let template = if let Some(template_path) = args.template {
+        fs::read_to_string(template_path)?
+    } else if Path::new(DEFAULT_TEMPLATE_PATH).is_file() {
+        fs::read_to_string(DEFAULT_TEMPLATE_PATH)?
+    } else {
+        "# {{crate}}\n\n{{readme}}\n".into()
+    };
+    let template = template + "\n"; // minjinja strips newline for smoe reason?
+    templates.add_template("template", &template)?;
+    let template = templates.get_template("template")?;
+
     let markdown = html2md::parse_html_custom(&docblock, &handlers);
-    let markdown = format!("# {crate_name}\n\n{markdown}\n");
+    let markdown = template.render(context!(
+    crate => crate_name,
+    readme => markdown,
+    version => manifest.package.map(|p|p.version)
+    ))?;
 
     if let Some(output_file) = args.output {
         let mut file = File::create(output_file)?;
