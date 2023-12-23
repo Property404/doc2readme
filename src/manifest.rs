@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
 use cargo_toml::Manifest;
 use std::{collections::HashMap, env, path::PathBuf};
 
@@ -15,25 +15,38 @@ impl ProjectInfo {
 
         let mut current_path = env::current_dir()?;
         while target_dir.is_none() || manifests.is_none() {
-            println!("{current_path:?}");
             if current_path.parent().expect("No parent") == current_path {
                 if manifests.is_none() {
                     bail!("Not in a Cargo project directory");
+                } else {
+                    bail!("Hit root searching for target directory");
                 }
             }
 
             let manifest_path = current_path.join("Cargo.toml");
             if manifests.is_none() && manifest_path.is_file() {
                 let manifest = Manifest::from_path(manifest_path)?;
-                if manifest.workspace.is_some() {
-                    todo!("Can't handle workspaces yet");
-                }
 
-                let Some(ref package) = manifest.package else {
-                    bail!("Manifest does not have a package section");
+                if let Some(workspace) = manifest.workspace {
+                    let mut map = HashMap::new();
+                    for member in workspace.members {
+                        let path = current_path.join(member);
+                        map.insert(
+                            path.file_name()
+                                .ok_or_else(|| {
+                                    anyhow!("Couldn't extract file name from '{}'", path.display())
+                                })?
+                                .to_string_lossy()
+                                .into_owned(),
+                            Manifest::from_path(path.join("Cargo.toml"))?,
+                        );
+                    }
+                    manifests = Some(map);
+                } else if let Some(ref package) = manifest.package {
+                    manifests = Some(HashMap::from([(package.name.clone(), manifest)]));
+                } else {
+                    bail!("Cargo.toml does not have a package section");
                 };
-
-                manifests = Some(HashMap::from([(package.name.clone(), manifest)]));
             }
 
             let target_path = current_path.join("target");
