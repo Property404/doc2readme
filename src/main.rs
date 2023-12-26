@@ -37,6 +37,13 @@
 //! * license - the crate license
 //! * readme - the generated readme text
 //! * version - the crate version
+//!
+//! # Todo
+//!
+//! * Git rid of extra newlines on codeblocks
+//! * Add back language info to codeblocks? (Not sure if possible)
+//! * Better license text? With contributing section?
+//! * Refactor to make unit testable
 mod anchor_handler;
 mod header_handler;
 mod manifest;
