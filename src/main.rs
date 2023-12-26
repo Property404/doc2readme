@@ -45,19 +45,16 @@
 //! * Better license text? With contributing section?
 //! * Refactor to make unit testable
 mod anchor_handler;
+mod convert;
 mod header_handler;
 mod manifest;
 
-use anchor_handler::AnchorHandlerFactory;
 use anyhow::{anyhow, bail, Result};
-use header_handler::HeaderHandlerFactory;
-use html2md::TagHandlerFactory;
+use convert::Options;
 use manifest::ProjectInfo;
 use minijinja::{context, Environment};
 use schmargs::{ArgsWithHelp, Schmargs};
-use scraper::{Html, Selector};
 use std::{
-    collections::HashMap,
     env,
     fs::{self, File},
     io::Write,
@@ -143,30 +140,15 @@ fn main() -> Result<()> {
     }
 
     let html = fs::read_to_string(doc_path)?;
-
-    let html = Html::parse_fragment(&html);
-    let docblock = html
-        .select(&query(".docblock")?)
-        .next()
-        .ok_or_else(|| anyhow!("Could not find .docblock element. Is this crate documented?"))?
-        .inner_html();
-
-    let mut handlers = HashMap::<String, Box<dyn TagHandlerFactory>>::new();
-    handlers.insert(
-        String::from("a"),
-        Box::new(AnchorHandlerFactory {
+    let markdown = convert::html_to_readme(
+        &html,
+        Options {
             base_url: args.base_url,
-        }),
-    );
-    handlers.insert(String::from("h1"), Box::new(HeaderHandlerFactory));
-    handlers.insert(String::from("h2"), Box::new(HeaderHandlerFactory));
-    handlers.insert(String::from("h3"), Box::new(HeaderHandlerFactory));
-    handlers.insert(String::from("h4"), Box::new(HeaderHandlerFactory));
-    handlers.insert(String::from("h5"), Box::new(HeaderHandlerFactory));
-    handlers.insert(String::from("h6"), Box::new(HeaderHandlerFactory));
+        },
+    )?;
 
+    // Template markdown
     let mut templates = Environment::new();
-
     let template = if let Some(template_path) = args.template {
         fs::read_to_string(template_path)?
     } else if Path::new(DEFAULT_TEMPLATE_PATH).is_file() {
@@ -176,18 +158,12 @@ fn main() -> Result<()> {
     };
     templates.add_template("template", &template)?;
     let template = templates.get_template("template")?;
-
-    let markdown = html2md::parse_html_custom(&docblock, &handlers);
-    let mut markdown = template.render(context!(
-    crate => crate_name,
-    readme => markdown,
-    version => manifest.package.as_ref().map(|p|p.version.clone()),
-    license => manifest.package.as_ref().map(|p|p.license.clone())
+    let markdown = template.render(context!(
+            crate => crate_name,
+            readme => markdown,
+            version => manifest.package.as_ref().map(|p|p.version.clone()),
+            license => manifest.package.as_ref().map(|p|p.license.clone())
     ))?;
-    // minjinja strips newlines, which is only sometimes what we want
-    if !markdown.ends_with('\n') {
-        markdown.push('\n');
-    }
 
     if let Some(output_file) = args.output {
         let mut file = File::create(output_file)?;
@@ -197,8 +173,4 @@ fn main() -> Result<()> {
     }
 
     Ok(())
-}
-
-fn query(selector: impl AsRef<str>) -> Result<Selector> {
-    Selector::parse(selector.as_ref()).map_err(|e| anyhow!("Failed to parse selector: {e}"))
 }
