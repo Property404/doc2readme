@@ -83,8 +83,9 @@ fn main() -> Result<()> {
     let mut args = env::args();
 
     // We have to skip twice because `cargo doc2readme` invokes as `cargo-doc2readme doc2readme`
-    for _ in 0..2 {
-        args.next().ok_or_else(|| anyhow!("No arguments"))?;
+    args.next().ok_or_else(|| anyhow!("No arguments"))?;
+    if args.next().ok_or_else(|| anyhow!("No subcommand"))? != "doc2readme" {
+        bail!("Expected 'doc2readme' subcommand");
     }
 
     let args = match Args::parse(args) {
