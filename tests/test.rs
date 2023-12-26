@@ -30,6 +30,7 @@ fn test_project(project_path: impl AsRef<Path>) -> Result<()> {
 
     // Extract docs
     assert_cmd::Command::cargo_bin(env!("CARGO_PKG_NAME"))?
+        .arg("doc2readme")
         .arg("-o")
         .arg("EXTRACTED.md")
         .ok()?;

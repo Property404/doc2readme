@@ -51,10 +51,11 @@ use schmargs::{ArgsWithHelp, Schmargs};
 use scraper::{Html, Selector};
 use std::{
     collections::HashMap,
+    env,
     fs::{self, File},
     io::Write,
     path::Path,
-    process::Command,
+    process::{self, Command},
     str,
 };
 
@@ -79,12 +80,24 @@ struct BareArgs {
 type Args = ArgsWithHelp<BareArgs>;
 
 fn main() -> Result<()> {
-    let args = match Args::parse_env() {
-        help @ Args::Help => {
+    let mut args = env::args();
+
+    // We have to skip twice because `cargo doc2readme` invokes as `cargo-doc2readme doc2readme`
+    for _ in 0..2 {
+        args.next().ok_or_else(|| anyhow!("No arguments"))?;
+    }
+
+    let args = match Args::parse(args) {
+        Ok(help @ Args::Help) => {
             println!("{help}");
             return Ok(());
         }
-        Args::Args(args) => args,
+        Ok(Args::Args(args)) => args,
+        Err(err) => {
+            eprintln!("Error: {err}");
+            eprintln!("Usage: {}", Args::USAGE);
+            process::exit(1);
+        }
     };
 
     let project_info = ProjectInfo::new()?;
