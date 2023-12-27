@@ -1,11 +1,12 @@
 use crate::anchor_handler::AnchorHandlerFactory;
+use crate::code_handler::CodeHandlerFactory;
 use crate::header_handler::HeaderHandlerFactory;
 use anyhow::{anyhow, Result};
 use html2md::TagHandlerFactory;
 use scraper::{Html, Selector};
 use std::collections::HashMap;
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct Options {
     pub base_url: Option<String>,
 }
@@ -31,6 +32,8 @@ pub fn html_to_readme(html: &str, options: Options) -> Result<String> {
     handlers.insert(String::from("h4"), Box::new(HeaderHandlerFactory));
     handlers.insert(String::from("h5"), Box::new(HeaderHandlerFactory));
     handlers.insert(String::from("h6"), Box::new(HeaderHandlerFactory));
+    handlers.insert(String::from("code"), Box::new(CodeHandlerFactory));
+    handlers.insert(String::from("pre"), Box::new(CodeHandlerFactory));
 
     let mut markdown = html2md::parse_html_custom(&docblock, &handlers);
 
@@ -44,4 +47,17 @@ pub fn html_to_readme(html: &str, options: Options) -> Result<String> {
 
 fn query(selector: impl AsRef<str>) -> Result<Selector> {
     Selector::parse(selector.as_ref()).map_err(|e| anyhow!("Failed to parse selector: {e}"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn codeblock() {
+        let markdown = html_to_readme("<div class=\"docblock\"><div class=\"example-wrap\"><pre class=\"language-notrust\"><code>hello you!
+</code></pre></div></div>", Default::default()).unwrap();
+
+        assert_eq!("```\nhello you!\n```", markdown.trim());
+    }
 }

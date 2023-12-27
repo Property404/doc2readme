@@ -40,11 +40,11 @@
 //!
 //! # Todo
 //!
-//! * Git rid of extra newlines on codeblocks
 //! * Add back language info to codeblocks? (Not sure if possible)
 //! * Better license text? With contributing section?
 //! * Refactor to make unit testable
 mod anchor_handler;
+mod code_handler;
 mod convert;
 mod header_handler;
 mod manifest;

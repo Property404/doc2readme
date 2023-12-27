@@ -13,14 +13,12 @@ Install:
 
 ```
 cargo install --git https://github.com/Property404/doc2readme
-
 ```
 
 Usage:
 
 ```
 $ cargo doc2readme -o README.md
-
 ```
 
 ## [Templating](#templating)
@@ -40,7 +38,6 @@ The default template is:
 
 {{license}}
 {% endif %}
-
 ```
 
 ### [Template variables](#template-variables)
@@ -49,6 +46,13 @@ The default template is:
 * license - the crate license
 * readme - the generated readme text
 * version - the crate version
+
+## [Todo](#todo)
+
+* Add back language info to codeblocks? (Not sure if possible)
+* Better license text? With contributing section?
+* Refactor to make unit testable
+
 
 ## License
 
