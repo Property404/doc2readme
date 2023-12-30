@@ -44,7 +44,7 @@ Arguments:
 When using in an `std` environment, you generally want to specify `iterates_over` to be
 `String`, so you can iterate over [std::env::Args](https://doc.rust-lang.org/nightly/std/env/struct.Args.html).
 
-```
+```rust
 use schmargs::Schmargs;
 
 /// A program to yell at a cloud
@@ -68,7 +68,7 @@ println!("{:?}", args.content);
 
 ## [`#![no_std]` Examples](#no_std-examples)
 
-```
+```rust
 use schmargs::Schmargs;
 
 /// A simple memory dump program
@@ -100,7 +100,7 @@ assert_eq!(args.len, 256);
 
 When strings are involved, you need to add a generic lifetime parameter
 
-```
+```rust
 use schmargs::Schmargs;
 
 /// A very important program to greet somebody

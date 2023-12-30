@@ -5,6 +5,7 @@ use markup5ever_rcdom::{Handle, NodeData};
 #[derive(Default)]
 pub struct CodeHandler {
     code_type: Option<String>,
+    language: Option<String>,
 }
 
 impl CodeHandler {
@@ -26,16 +27,21 @@ impl CodeHandler {
         {
             "pre" => {
                 // code block should have its own paragraph
+                if !printer.data.ends_with('\n') {
+                    printer.insert_newline();
+                }
                 if start {
                     printer.insert_newline();
                 }
-                if !printer.data.ends_with("\n") {
+                printer.append_str("```");
+                if start {
+                    if let Some(language) = &self.language {
+                        printer.append_str(language.as_ref());
+                    }
+                } else {
                     printer.insert_newline();
                 }
-                printer.append_str("```\n");
-                if !start {
-                    printer.insert_newline();
-                }
+                printer.insert_newline();
             }
             "code" | "samp" => printer.append_str("`"),
             _ => {}
@@ -45,10 +51,29 @@ impl CodeHandler {
 
 impl TagHandler for CodeHandler {
     fn handle(&mut self, tag: &Handle, printer: &mut StructuredPrinter) {
-        self.code_type = match tag.data {
-            NodeData::Element { ref name, .. } => Some(name.local.to_string()),
-            _ => None,
-        };
+        if let NodeData::Element {
+            ref name,
+            ref attrs,
+            ..
+        } = tag.data
+        {
+            self.code_type = Some(name.local.to_string());
+            let classes = attrs
+                .borrow()
+                .iter()
+                .find(|attr| attr.name.local.to_string() == "class")
+                .cloned();
+            if let Some(classes) = classes {
+                let classes = classes.value.split_whitespace();
+                for class in classes {
+                    if class == "rust" {
+                        self.language = Some(String::from("rust"))
+                    } else if let Some(language) = class.strip_prefix("language-") {
+                        self.language = Some(language.into())
+                    }
+                }
+            }
+        }
 
         self.do_handle(printer, true);
     }

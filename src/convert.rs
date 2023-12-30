@@ -58,6 +58,6 @@ mod tests {
         let markdown = html_to_readme("<div class=\"docblock\"><div class=\"example-wrap\"><pre class=\"language-notrust\"><code>hello you!
 </code></pre></div></div>", Default::default()).unwrap();
 
-        assert_eq!("```\nhello you!\n```", markdown.trim());
+        assert_eq!("```notrust\nhello you!\n```", markdown.trim());
     }
 }
