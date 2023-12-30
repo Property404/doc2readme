@@ -1,11 +1,13 @@
 use html2md::{StructuredPrinter, TagHandler, TagHandlerFactory};
+use url::Url;
 
 use markup5ever_rcdom::{Handle, NodeData};
 
 #[derive(Clone, Debug, Default)]
 pub(crate) struct AnchorHandler {
-    base_url: Option<String>,
+    base_url: Option<Url>,
     start_pos: usize,
+    // This is not necessarily a full URL - can be an anchor, for example
     url: Option<String>,
     skip: bool,
 }
@@ -57,7 +59,12 @@ impl TagHandler for AnchorHandler {
         self.url = self
             .base_url
             .as_ref()
-            .map(|base_url| base_url.to_string() + &url)
+            .map(|base_url| base_url.join(&url).map(|url| url.to_string()))
+            .transpose()
+            .unwrap_or_else(|err| {
+                eprintln!("Error parsing URL: {err}");
+                None
+            })
     }
 
     fn skip_descendants(&self) -> bool {
@@ -75,7 +82,7 @@ impl TagHandler for AnchorHandler {
 
 #[derive(Clone, Debug)]
 pub(crate) struct AnchorHandlerFactory {
-    pub base_url: Option<String>,
+    pub base_url: Option<Url>,
 }
 
 impl TagHandlerFactory for AnchorHandlerFactory {

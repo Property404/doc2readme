@@ -5,6 +5,7 @@ use anyhow::{anyhow, Result};
 use html2md::TagHandlerFactory;
 use scraper::{Html, Selector};
 use std::collections::HashMap;
+use url::Url;
 
 #[derive(Clone, Debug, Default)]
 pub struct Options {
@@ -23,7 +24,18 @@ pub fn html_to_readme(html: &str, options: Options) -> Result<String> {
     handlers.insert(
         String::from("a"),
         Box::new(AnchorHandlerFactory {
-            base_url: options.base_url,
+            base_url: options
+                .base_url
+                .map(|mut s| {
+                    // User has no business files as part of the base url, so assume they meant a
+                    // directory
+                    if !s.ends_with('/') {
+                        s.push('/')
+                    };
+
+                    Url::parse(&s)
+                })
+                .transpose()?,
         }),
     );
     handlers.insert(String::from("h1"), Box::new(HeaderHandlerFactory));
@@ -54,5 +66,57 @@ mod tests {
 </code></pre></div></div>", Default::default()).unwrap();
 
         assert_eq!("```notrust\nhello you!\n```", markdown.trim());
+    }
+
+    #[test]
+    fn strip_relative_links() {
+        let markdown = html_to_readme(
+            "<div class='docblock'><a href='fun'>hi</a></div>",
+            Default::default(),
+        )
+        .unwrap();
+        assert_eq!("hi", markdown.trim());
+
+        let markdown = html_to_readme(
+            "<div class='docblock'><a href='/fun'>hi</a></div>",
+            Default::default(),
+        )
+        .unwrap();
+        assert_eq!("hi", markdown.trim());
+
+        let markdown = html_to_readme(
+            "<div class='docblock'><a href='https://dagans.dev/fun'>hi</a></div>",
+            Default::default(),
+        )
+        .unwrap();
+        assert_eq!("[hi](https://dagans.dev/fun)", markdown.trim());
+    }
+
+    #[test]
+    fn relative_links() {
+        let options = Options {
+            base_url: Some(String::from("https://dagans.dev/page/")),
+        };
+
+        let markdown = html_to_readme(
+            "<div class='docblock'><a href='fun'>hi</a></div>",
+            options.clone(),
+        )
+        .unwrap();
+        assert_eq!("[hi](https://dagans.dev/page/fun)", markdown.trim());
+
+        let markdown = html_to_readme(
+            "<div class='docblock'><a href='/fun'>hi</a></div>",
+            options.clone(),
+        )
+        .unwrap();
+        assert_eq!("[hi](https://dagans.dev/fun)", markdown.trim());
+
+        let markdown = html_to_readme(
+            "<div class='docblock'><a href='https://dagans.dev/fun'>hi</a></div>",
+            options.clone(),
+        )
+        .unwrap();
+        assert_eq!("[hi](https://dagans.dev/fun)", markdown.trim());
     }
 }
