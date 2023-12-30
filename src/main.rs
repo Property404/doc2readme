@@ -82,13 +82,16 @@ struct BareArgs {
 type Args = ArgsWithHelp<BareArgs>;
 
 fn main() -> Result<()> {
-    let mut args = env::args();
-
     // We have to skip twice because `cargo doc2readme` invokes as `cargo-doc2readme doc2readme`
-    args.next().ok_or_else(|| anyhow!("No arguments"))?;
-    if args.next().ok_or_else(|| anyhow!("No subcommand"))? != "doc2readme" {
-        bail!("Expected 'doc2readme' subcommand");
-    }
+    //
+    // Allow "readme" so we can be a drop-in replacement for `cargo-readme`
+    let args = env::args().skip(1).enumerate().filter_map(|(i, val)| {
+        if i == 0 && (val == "doc2readme" || val == "readme") {
+            None
+        } else {
+            Some(val)
+        }
+    });
 
     let args = match Args::parse(args) {
         Ok(help @ Args::Help) => {
