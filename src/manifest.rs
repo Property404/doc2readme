@@ -15,11 +15,11 @@ impl ProjectInfo {
 
         let mut current_path = env::current_dir()?;
         while target_dir.is_none() || manifests.is_none() {
-            if current_path.parent().expect("No parent") == current_path {
+            if current_path.parent().is_none() {
                 if manifests.is_none() {
                     bail!("Not in a Cargo project directory");
                 } else {
-                    bail!("Hit root searching for target directory");
+                    bail!("Could not find `target` directory.");
                 }
             }
 
@@ -54,7 +54,10 @@ impl ProjectInfo {
                 target_dir = Some(target_path);
             }
 
-            current_path = current_path.join("..");
+            current_path = current_path
+                .parent()
+                .expect("Expected directory to have parent")
+                .into();
         }
 
         Ok(Self {

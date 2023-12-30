@@ -108,6 +108,9 @@ fn main() -> Result<()> {
         }
     };
 
+    // Run `cargo doc` so docs and `target` directory is created
+    Command::new("cargo").arg("doc").status()?;
+
     let project_info = ProjectInfo::new()?;
     let (crate_name, manifest) = if let Some(crate_name) = args.crate_name {
         (
@@ -137,7 +140,6 @@ fn main() -> Result<()> {
         .join(project_info.target_dir)
         .join(format!("doc/{}/index.html", crate_name.replace('-', "_")));
 
-    Command::new("cargo").arg("doc").status()?;
     if doc_path.metadata().is_err() {
         bail!("Cannot find '{}'", doc_path.display());
     }
