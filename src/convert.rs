@@ -9,7 +9,10 @@ use url::Url;
 
 #[derive(Clone, Debug, Default)]
 pub struct Options {
+    // Base URL used to convert relative links to absolute ones
     pub base_url: Option<String>,
+    // Unpin `std` documentation versions?
+    pub unpin_std_docs: bool,
 }
 
 pub fn html_to_readme(html: &str, options: Options) -> Result<String> {
@@ -36,6 +39,7 @@ pub fn html_to_readme(html: &str, options: Options) -> Result<String> {
                     Url::parse(&s)
                 })
                 .transpose()?,
+            unpin_std_docs: options.unpin_std_docs,
         }),
     );
     handlers.insert(String::from("h1"), Box::new(HeaderHandlerFactory));
@@ -96,6 +100,7 @@ mod tests {
     fn relative_links() {
         let options = Options {
             base_url: Some(String::from("https://dagans.dev/page/")),
+            ..Default::default()
         };
 
         let markdown = html_to_readme(
@@ -118,5 +123,35 @@ mod tests {
         )
         .unwrap();
         assert_eq!("[hi](https://dagans.dev/fun)", markdown.trim());
+    }
+
+    #[test]
+    fn unpin_std_docs_version() {
+        let options = Options {
+            unpin_std_docs: true,
+            ..Default::default()
+        };
+        let urls = [
+            "https://doc.rust-lang.org/1.75.0/core/iter/trait.Iterator.html",
+            "https://doc.rust-lang.org/stable/core/iter/trait.Iterator.html",
+            "https://doc.rust-lang.org/beta/core/iter/trait.Iterator.html",
+            "https://doc.rust-lang.org/nightly/core/iter/trait.Iterator.html",
+            // Future version of Rust
+            "https://doc.rust-lang.org/9.743.234/core/iter/trait.Iterator.html",
+            // Base case
+            "https://doc.rust-lang.org/core/iter/trait.Iterator.html",
+        ];
+
+        for url in urls {
+            let markdown = html_to_readme(
+                &format!("<div class='docblock'><a href='{url}'>link</a></div>"),
+                options.clone(),
+            )
+            .unwrap();
+            assert_eq!(
+                "[link](https://doc.rust-lang.org/core/iter/trait.Iterator.html)",
+                markdown.trim()
+            );
+        }
     }
 }

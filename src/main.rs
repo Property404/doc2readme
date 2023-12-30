@@ -69,11 +69,14 @@ const DEFAULT_TEMPLATE_PATH: &str = "README.tpl";
 #[schmargs(iterates_over=String)]
 /// Construct README from rust docs
 struct BareArgs {
+    /// Unpin the version for `std`/`core`/`alloc` docs links
+    #[arg(long)]
+    unpin_std_docs: bool,
     /// The template to use, if any
     #[arg(short, long)]
     template: Option<String>,
     /// Base URL for relative links
-    #[arg(short, long)]
+    #[arg(long)]
     base_url: Option<String>,
     /// Output path
     #[arg(short, long)]
@@ -149,6 +152,7 @@ fn main() -> Result<()> {
         &html,
         Options {
             base_url: args.base_url,
+            unpin_std_docs: args.unpin_std_docs,
         },
     )?;
 
