@@ -11,13 +11,13 @@ links in crate documentation.
 
 Install:
 
-```
+```notrust
 cargo install --git https://github.com/Property404/doc2readme
 ```
 
 Usage:
 
-```
+```notrust
 $ cargo doc2readme -o README.md
 ```
 
@@ -29,7 +29,7 @@ templating engine, which happens to be a superset of `cargo-readme`’s templati
 
 The default template is:
 
-```
+```notrust
 # {{crate}}
 
 {{readme}}
@@ -49,9 +49,7 @@ The default template is:
 
 ## [Todo](#todo)
 
-* Add back language info to codeblocks? (Not sure if possible)
 * Better license text? With contributing section?
-* Refactor to make unit testable
 
 
 ## License
