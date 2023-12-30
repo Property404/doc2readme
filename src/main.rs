@@ -33,10 +33,11 @@
 //!
 //! ## Template variables
 //!
-//! * crate - the crate name
-//! * license - the crate license
-//! * readme - the generated readme text
-//! * version - the crate version
+//! * `crate` - the crate name, alias for `package.name`
+//! * `license` - the crate license, alias for `package.license`
+//! * `readme` - the generated readme text
+//! * `version` - the crate version, alias for `package.version`
+//! * `package` - All package keys
 //!
 //! # Todo
 //!
@@ -164,7 +165,8 @@ fn main() -> Result<()> {
             crate => crate_name,
             readme => markdown,
             version => manifest.package.as_ref().map(|p|p.version.clone()),
-            license => manifest.package.as_ref().map(|p|p.license.clone())
+            license => manifest.package.as_ref().map(|p|p.license.clone()),
+            package => manifest.package.clone(),
     ))?;
 
     if let Some(output_file) = args.output {

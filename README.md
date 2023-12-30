@@ -42,10 +42,11 @@ The default template is:
 
 ### Template variables
 
-* crate - the crate name
-* license - the crate license
-* readme - the generated readme text
-* version - the crate version
+* `crate` - the crate name, alias for `package.name`
+* `license` - the crate license, alias for `package.license`
+* `readme` - the generated readme text
+* `version` - the crate version, alias for `package.version`
+* `package` - All package keys
 
 ## Todo
 
