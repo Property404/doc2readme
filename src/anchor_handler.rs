@@ -41,6 +41,14 @@ impl TagHandler for AnchorHandler {
             _ => String::new(),
         };
 
+        // Don't convert header links
+        let immediate_parent = printer.parent_chain.last().unwrap().to_owned();
+        if ["h1", "h2", "h3", "h4", "h5", "h6"].contains(&immediate_parent.as_str())
+            && url.starts_with('#')
+        {
+            return;
+        }
+
         if url.starts_with("https://") || url.starts_with('#') {
             self.url = Some(url);
             return;

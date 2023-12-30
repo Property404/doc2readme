@@ -7,7 +7,7 @@ Alternative to [cargo-readme](https://docs.rs/cargo-readme). Unlike `cargo-readm
 from the rust source. The main advantage here is that `cargo-doc2readme` can handle relative
 links in crate documentation.
 
-## [Basic Usage](#basic-usage)
+## Basic Usage
 
 Install:
 
@@ -21,7 +21,7 @@ Usage:
 $ cargo doc2readme -o README.md
 ```
 
-## [Templating](#templating)
+## Templating
 
 `cargo-doc2readme` usages [minjinja](https://docs.rs/minijinja) as its
 templating engine, which happens to be a superset of `cargo-readme`’s templating engine. Like
@@ -40,14 +40,14 @@ The default template is:
 {% endif %}
 ```
 
-### [Template variables](#template-variables)
+### Template variables
 
 * crate - the crate name
 * license - the crate license
 * readme - the generated readme text
 * version - the crate version
 
-## [Todo](#todo)
+## Todo
 
 * Better license text? With contributing section?
 
