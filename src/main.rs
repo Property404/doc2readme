@@ -9,13 +9,13 @@
 //!
 //! Install:
 //!
-//! ```notrust
+//! ```shell
 //! cargo install --git https://github.com/Property404/doc2readme
 //! ```
 //!
 //! Usage:
 //!
-//! ```notrust
+//! ```shell
 //! $ cargo doc2readme -o README.md
 //! ```
 //!
@@ -27,7 +27,7 @@
 //!
 //! The default template is:
 //!
-//! ```notrust
+//! ```jinja
 #![doc = include_str!("./DEFAULT_TEMPLATE.tpl")]
 //! ```
 //!
@@ -40,7 +40,8 @@
 //!
 //! # Todo
 //!
-//! * Better license text? With contributing section?
+//! * Get dependencies published
+//! * `cargo-readme` feature parity
 mod anchor_handler;
 mod code_handler;
 mod convert;

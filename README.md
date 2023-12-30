@@ -11,13 +11,13 @@ links in crate documentation.
 
 Install:
 
-```notrust
+```shell
 cargo install --git https://github.com/Property404/doc2readme
 ```
 
 Usage:
 
-```notrust
+```shell
 $ cargo doc2readme -o README.md
 ```
 
@@ -29,7 +29,7 @@ templating engine, which happens to be a superset of `cargo-readme`’s templati
 
 The default template is:
 
-```notrust
+```jinja
 # {{crate}}
 
 {{readme}}
@@ -49,7 +49,8 @@ The default template is:
 
 ## Todo
 
-* Better license text? With contributing section?
+* Get dependencies published
+* `cargo-readme` feature parity
 
 
 ## License
