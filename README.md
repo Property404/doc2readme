@@ -53,7 +53,6 @@ The default template is:
 * Get dependencies published
 * `cargo-readme` feature parity
 
-
 ## License
 
 GPL-3.0

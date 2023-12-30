@@ -161,13 +161,18 @@ fn main() -> Result<()> {
     };
     templates.add_template("template", &template)?;
     let template = templates.get_template("template")?;
-    let markdown = template.render(context!(
+    let mut markdown = template.render(context!(
             crate => crate_name,
             readme => markdown,
             version => manifest.package.as_ref().map(|p|p.version.clone()),
             license => manifest.package.as_ref().map(|p|p.license.clone()),
             package => manifest.package.clone(),
     ))?;
+
+    // minjinja strips newlines, which is only sometimes what we want
+    if !markdown.ends_with('\n') {
+        markdown.push('\n');
+    }
 
     if let Some(output_file) = args.output {
         let mut file = File::create(output_file)?;

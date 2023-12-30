@@ -35,12 +35,7 @@ pub fn html_to_readme(html: &str, options: Options) -> Result<String> {
     handlers.insert(String::from("code"), Box::new(CodeHandlerFactory));
     handlers.insert(String::from("pre"), Box::new(CodeHandlerFactory));
 
-    let mut markdown = html2md::parse_html_custom(&docblock, &handlers);
-
-    // minjinja strips newlines, which is only sometimes what we want
-    if !markdown.ends_with('\n') {
-        markdown.push('\n');
-    }
+    let markdown = html2md::parse_html_custom(&docblock, &handlers);
 
     Ok(markdown)
 }
