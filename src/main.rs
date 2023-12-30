@@ -21,7 +21,7 @@
 //!
 //! # Templating
 //!
-//! `cargo-doc2readme` usages [minjinja](https://docs.rs/minijinja) as its
+//! `cargo-doc2readme` uses [minjinja](https://docs.rs/minijinja) as its
 //! templating engine, which happens to be a superset of `cargo-readme`'s templating engine. Like
 //! `cargo-readme`, `cargo-doc2readme` uses `README.tpl` as the template by default if it exists.
 //!
