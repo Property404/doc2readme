@@ -109,7 +109,7 @@ fn main() -> Result<()> {
     };
 
     // Run `cargo doc` so docs and `target` directory is created
-    Command::new("cargo").arg("doc").status()?;
+    Command::new("cargo").arg("doc").arg("--no-deps").status()?;
 
     let project_info = ProjectInfo::new()?;
     let (crate_name, manifest) = if let Some(crate_name) = args.crate_name {
