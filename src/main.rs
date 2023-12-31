@@ -82,6 +82,7 @@ struct BareArgs {
     #[arg(short, long)]
     output: Option<String>,
     /// The crate from which to extract docs
+    #[arg(value_name = "CRATE")]
     crate_name: Option<String>,
 }
 type Args = ArgsWithHelp<BareArgs>;
