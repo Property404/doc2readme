@@ -43,7 +43,6 @@
 //! # Todo
 //!
 //! * Get dependencies published
-//! * `cargo-readme` feature parity
 mod anchor_handler;
 mod code_handler;
 mod convert;
@@ -73,6 +72,9 @@ struct BareArgs {
     /// Unpin the version for `std`/`core`/`alloc` docs links
     #[arg(long)]
     unpin_std_docs: bool,
+    /// Don't use any templating
+    #[arg(long)]
+    no_template: bool,
     /// Base URL for relative links
     #[arg(short = 'u', long)]
     base_url: Option<String>,
@@ -150,7 +152,7 @@ fn main() -> Result<()> {
     }
 
     let html = fs::read_to_string(doc_path)?;
-    let markdown = convert::html_to_readme(
+    let mut markdown = convert::html_to_readme(
         &html,
         Options {
             base_url: args.base_url,
@@ -159,23 +161,25 @@ fn main() -> Result<()> {
     )?;
 
     // Template markdown
-    let mut templates = Environment::new();
-    let template = if let Some(template_path) = args.template {
-        fs::read_to_string(template_path)?
-    } else if Path::new(DEFAULT_TEMPLATE_PATH).is_file() {
-        fs::read_to_string(DEFAULT_TEMPLATE_PATH)?
-    } else {
-        include_str!("DEFAULT_TEMPLATE.tpl").into()
-    };
-    templates.add_template("template", &template)?;
-    let template = templates.get_template("template")?;
-    let mut markdown = template.render(context!(
-            crate => crate_name,
-            readme => markdown,
-            version => manifest.package.as_ref().map(|p|p.version.clone()),
-            license => manifest.package.as_ref().map(|p|p.license.clone()),
-            package => manifest.package.clone(),
-    ))?;
+    if !args.no_template {
+        let mut templates = Environment::new();
+        let template = if let Some(template_path) = args.template {
+            fs::read_to_string(template_path)?
+        } else if Path::new(DEFAULT_TEMPLATE_PATH).is_file() {
+            fs::read_to_string(DEFAULT_TEMPLATE_PATH)?
+        } else {
+            include_str!("DEFAULT_TEMPLATE.tpl").into()
+        };
+        templates.add_template("template", &template)?;
+        let template = templates.get_template("template")?;
+        markdown = template.render(context!(
+                crate => crate_name,
+                readme => markdown,
+                version => manifest.package.as_ref().map(|p|p.version.clone()),
+                license => manifest.package.as_ref().map(|p|p.license.clone()),
+                package => manifest.package.clone(),
+        ))?;
+    }
 
     // minjinja strips newlines, which is only sometimes what we want
     if !markdown.ends_with('\n') {

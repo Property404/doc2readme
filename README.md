@@ -52,7 +52,6 @@ The default template is:
 ## Todo
 
 * Get dependencies published
-* `cargo-readme` feature parity
 
 ## License
 
