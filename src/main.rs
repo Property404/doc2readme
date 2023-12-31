@@ -72,12 +72,12 @@ struct BareArgs {
     /// Unpin the version for `std`/`core`/`alloc` docs links
     #[arg(long)]
     unpin_std_docs: bool,
+    /// Base URL for relative links
+    #[arg(short = 'u', long)]
+    base_url: Option<String>,
     /// The template to use, if any
     #[arg(short, long)]
     template: Option<String>,
-    /// Base URL for relative links
-    #[arg(long)]
-    base_url: Option<String>,
     /// Output path
     #[arg(short, long)]
     output: Option<String>,

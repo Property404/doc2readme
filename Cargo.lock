@@ -662,9 +662,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.33"
+version = "1.0.34"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5267fca4496028628a95160fc423a33e8b2e6af8a5302579e322e4b520293cae"
+checksum = "22a37c9326af5ed140c86a46655b5278de879853be5573c01df185b6f49a580a"
 dependencies = [
  "proc-macro2",
 ]
@@ -762,7 +762,7 @@ dependencies = [
 [[package]]
 name = "schmargs"
 version = "0.0.0"
-source = "git+https://github.com/Property404/schmargs?rev=ee5c87f#ee5c87fa03d9eb0230d785f48ce819d6fb632f8c"
+source = "git+https://github.com/Property404/schmargs?rev=0cae9ebb#0cae9ebb842c2de99895b584ca4dea7f54524261"
 dependencies = [
  "derive_more 1.0.0-beta.6",
  "schmargs-derive",
@@ -771,7 +771,7 @@ dependencies = [
 [[package]]
 name = "schmargs-derive"
 version = "0.0.0"
-source = "git+https://github.com/Property404/schmargs?rev=ee5c87f#ee5c87fa03d9eb0230d785f48ce819d6fb632f8c"
+source = "git+https://github.com/Property404/schmargs?rev=0cae9ebb#0cae9ebb842c2de99895b584ca4dea7f54524261"
 dependencies = [
  "anyhow",
  "proc-macro2",
