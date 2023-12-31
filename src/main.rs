@@ -10,7 +10,7 @@
 //! Install:
 //!
 //! ```shell
-//! cargo install --git https://github.com/Property404/doc2readme
+//! cargo install cargo-doc2readme --git https://github.com/Property404/doc2readme
 //! ```
 //!
 //! Usage:
