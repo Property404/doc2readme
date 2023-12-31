@@ -75,6 +75,9 @@ struct BareArgs {
     /// Don't use any templating
     #[arg(long)]
     no_template: bool,
+    /// Arguments to pass to `cargo doc`
+    #[arg(long)]
+    rustdoc_args: Option<Vec<String>>,
     /// Base URL for relative links
     #[arg(short = 'u', long)]
     base_url: Option<String>,
@@ -116,7 +119,11 @@ fn main() -> Result<()> {
     };
 
     // Run `cargo doc` so docs and `target` directory is created
-    Command::new("cargo").arg("doc").arg("--no-deps").status()?;
+    Command::new("cargo")
+        .arg("doc")
+        .arg("--no-deps")
+        .args(args.rustdoc_args.unwrap_or_default().into_iter())
+        .status()?;
 
     let project_info = ProjectInfo::new()?;
     let (crate_name, manifest) = if let Some(crate_name) = args.crate_name {
