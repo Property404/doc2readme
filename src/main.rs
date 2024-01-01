@@ -76,8 +76,8 @@ struct BareArgs {
     #[arg(long)]
     no_template: bool,
     /// Arguments to pass to `cargo doc`
-    #[arg(long)]
-    rustdoc_args: Option<Vec<String>>,
+    #[arg(long, default_value)]
+    rustdoc_args: Vec<String>,
     /// Base URL for relative links
     #[arg(short = 'u', long)]
     base_url: Option<String>,
@@ -122,7 +122,7 @@ fn main() -> Result<()> {
     Command::new("cargo")
         .arg("doc")
         .arg("--no-deps")
-        .args(args.rustdoc_args.unwrap_or_default().into_iter())
+        .args(args.rustdoc_args.into_iter())
         .status()?;
 
     let project_info = ProjectInfo::new()?;
