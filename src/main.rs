@@ -31,7 +31,7 @@
 //! ```jinja
 #![doc = include_str!("./DEFAULT_TEMPLATE.tpl")]
 //! ```
-//!
+//! 
 //! ## Template variables
 //!
 //! * `crate` - the crate name, alias for `package.name`
